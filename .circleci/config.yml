@@ -19,4 +19,4 @@ jobs:
       - run:
           command: ./terraform plan -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
       - run:
-          command: ./terraform destroy -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
+          command: ./terraform destroy -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -force
