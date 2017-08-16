@@ -2,10 +2,7 @@ version: 2.0
 
 jobs:
   build:
-  shell:
-    - run:
-    command: |
-      echo Running test    
-  branches:
-        only:
-           - master
+    steps:
+      - run:
+          name: build
+          command: echo helloworld
