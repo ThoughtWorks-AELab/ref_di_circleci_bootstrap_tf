@@ -11,3 +11,9 @@ jobs:
           command: wget https://releases.hashicorp.com/terraform/0.10.1/terraform_0.10.1_linux_amd64.zip
       - run:
           command: unzip terraform_0.10.1_linux_amd64.zip
+      - run:
+          command: ./terraform init -var-file=./bootstrap.tfvars -backend-config backend.conf
+      - run:
+          command: ./terraform apply -var-file=./bootstrap.tfvars
+      - run:
+          command: ./terraform plan -var-file=./bootstrap.tfvars
