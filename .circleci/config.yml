@@ -7,7 +7,7 @@ jobs:
       - run:
           name: build
           command: echo helloworld
-      -run:
-         comand: wget https://releases.hashicorp.com/terraform/0.10.1/terraform_0.10.1_linux_amd64.zip
-      -run:
-         comand: unzip terraform_0.10.1_linux_amd64.zip
+      - run:
+          comand: wget https://releases.hashicorp.com/terraform/0.10.1/terraform_0.10.1_linux_amd64.zip
+      - run:
+          comand: unzip terraform_0.10.1_linux_amd64.zip
