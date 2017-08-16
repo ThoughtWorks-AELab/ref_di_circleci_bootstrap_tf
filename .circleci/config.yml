@@ -12,10 +12,8 @@ jobs:
       - run:
           command: unzip terraform_0.10.1_linux_amd64.zip
       - run:
-          command: ls -l
+          command: ./terraform init -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
       - run:
-          command: ./terraform init -var-file=./bootstrap.tfvars -backend-config backend.conf
+          command: ./terraform apply -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
       - run:
-          command: ./terraform apply -var-file=./bootstrap.tfvars
-      - run:
-          command: ./terraform plan -var-file=./bootstrap.tfvars
+          command: ./terraform plan -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
