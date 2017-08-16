@@ -12,6 +12,8 @@ jobs:
       - run:
           command: unzip terraform_0.10.1_linux_amd64.zip
       - run:
+          command: ls -l
+      - run:
           command: ./terraform init -var-file=./bootstrap.tfvars -backend-config backend.conf
       - run:
           command: ./terraform apply -var-file=./bootstrap.tfvars
