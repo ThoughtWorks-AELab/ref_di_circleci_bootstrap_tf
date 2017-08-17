@@ -1,17 +1,16 @@
 version: 2.0
 jobs:
   build:
-    machine: true
-
+    docker:
+      - image: quay.io/thoughtworks_aelab/circleci-docker:1.17
+        auth:
+          username: $DOCKER_USER
+          password: $QUAY_TOKEN
     steps:
       - checkout
       - run:
           name: build
           command: echo helloworld
-      - run:
-          command: wget https://releases.hashicorp.com/terraform/0.10.1/terraform_0.10.1_linux_amd64.zip
-      - run:
-          command: unzip terraform_0.10.1_linux_amd64.zip
       - run:
           command: ./terraform init -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
       - run:
