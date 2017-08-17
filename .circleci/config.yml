@@ -2,7 +2,7 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: quay.io/thoughtworks_aelab/circleci-docker:1.17
+      - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
         auth:
           username: $DOCKER_USER
           password: $QUAY_TOKEN
@@ -10,11 +10,24 @@ jobs:
     steps:
       - checkout
       - run:
+          command: bundle install
+      - run:
+          command: mkdir ~/.aws
+      - run:
+          command: |
+            cat <<EOF > ~/.aws/credentials
+            [default]
+            aws_access_key_id=$AWS_ACCESS_KEY_ID
+            aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
+            EOF
+      - run:
           command: /terraform init -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
       - run:
 
           command: /terraform apply -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
       - run:
           command: /terraform plan -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
+      - run:
+          command: bundle exec rspec spec
       - run:
           command:  /terraform destroy -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -force
