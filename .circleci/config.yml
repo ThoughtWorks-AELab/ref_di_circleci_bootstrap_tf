@@ -6,16 +6,15 @@ jobs:
         auth:
           username: $DOCKER_USER
           password: $QUAY_TOKEN
+
     steps:
       - checkout
       - run:
-          name: build
-          command: echo helloworld
+          command: /terraform init -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
       - run:
-          command: ./terraform init -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
+
+          command: /terraform apply -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
       - run:
-          command: ./terraform apply -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
+          command: /terraform plan -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
       - run:
-          command: ./terraform plan -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
-      - run:
-          command: ./terraform destroy -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -force
+          command:  /terraform destroy -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -force
