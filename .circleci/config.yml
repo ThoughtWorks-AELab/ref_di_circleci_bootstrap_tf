@@ -29,29 +29,29 @@ jobs:
       - run:
           command: /terraform plan -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
 
-      - persist_to_workspace:
-         root: $CIRCLE_WORKING_DIRECTORY/backend.conf
-
-    steps:
       - run:
           command: bundle exec rspec spec
 
-  destroy:
-    docker:
-      - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
+      - persist_to_workspace:
+         root: $CIRCLE_WORKING_DIRECTORY/backend.conf
+
+
+destroy:
+  docker:
+    - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
         auth:
           username: $DOCKER_USER
           password: $QUAY_TOKEN
-    steps:
-      - attach_workspace:
-         at: /
-      - run:
-          command:  /terraform destroy -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -force
+  steps:
+    - attach_workspace:
+        at: /
+    - run:
+        command:  /terraform destroy -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -force
 
 
   workflows:
     version: 2
-    ami-build:
+    build and deploy:
       jobs:
         - aprove-build:
             type: approval
