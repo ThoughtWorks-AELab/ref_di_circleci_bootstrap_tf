@@ -1,6 +1,6 @@
 version: 2.0
 jobs:
-  checkout_base_image:
+  build-deploy-test-ami:
     docker:
       - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
         auth:
@@ -9,11 +9,6 @@ jobs:
 
     steps:
       - checkout
-
-  bundle_dependencies:
-    docker:
-      - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
-    steps:
       - run:
           command: bundle install
       - run:
@@ -26,10 +21,9 @@ jobs:
             aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
             EOF
 
-  deploy_to_aws:
-    docker:
-      - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
     steps:
+       - attach_workspace:
+          at: /
       - run:
           command: /terraform init -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
       - run:
@@ -38,9 +32,9 @@ jobs:
       - run:
           command: /terraform plan -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars
 
-  run_acceptance_test:
-    docker:
-      - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
+      - persist_to_workspace:
+         root: $CIRCLE_WORKING_DIRECTORY/backend.conf
+
     steps:
       - run:
           command: bundle exec rspec spec
@@ -48,7 +42,12 @@ jobs:
   destroy:
     docker:
       - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
+        auth:
+          username: $DOCKER_USER
+          password: $QUAY_TOKEN
     steps:
+      - attach_workspace:
+         at: /
       - run:
           command:  /terraform destroy -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -force
 
@@ -57,20 +56,9 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - checkout_base_image
-      - bundle_dependencies:
-          requires:
-            - checkout_base_image
-      - deploy_to_aws:
-          requires:
-            - bundle_dependencies
-      - run_acceptance_test:
-          requires:
-            - deploy_to_aws
-      - hold:
+      - build-deploy-test-ami:
          type: approval
-         requires:
-           - run_acceptance_test
       - destroy:
+        type: approval
           requires:
-            - hold
+            - build-deploy-test-ami
