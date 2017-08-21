@@ -67,11 +67,7 @@ workflows:
   version: 2
   build-and-deploy-ami:
     jobs:
-      - aprove-build:
-         type: approval
       - build-deploy-test-ami:
-         requires:
-           - aprove-build
       - aprove-destroy:
          type: approval
          requires:
