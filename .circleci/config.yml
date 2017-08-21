@@ -49,19 +49,19 @@ jobs:
           command:  /terraform destroy -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -force
 
 
-  workflows:
-    version: 2
-    build and deploy:
-      jobs:
-        - aprove-build:
-            type: approval
-        - build-deploy-test-ami:
-           requires:
-             -aprove-build
-        - aprove-destroy:
-            type: approval
-            requires:
-              - build-deploy-test-ami
-        - destroy:
-            requires:
-              - aprove-destroy
+workflows:
+  version: 2
+  build and deploy:
+    jobs:
+      - aprove-build:
+          type: approval
+      - build-deploy-test-ami:
+         requires:
+           -aprove-build
+      - aprove-destroy:
+          type: approval
+          requires:
+            - build-deploy-test-ami
+      - destroy:
+          requires:
+            - aprove-destroy
