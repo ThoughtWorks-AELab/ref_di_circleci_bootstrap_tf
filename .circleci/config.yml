@@ -21,9 +21,6 @@ jobs:
             aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
             EOF
 
-    steps:
-       - attach_workspace:
-          at: /
       - run:
           command: /terraform init -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
       - run:
@@ -60,5 +57,5 @@ workflows:
          type: approval
       - destroy:
         type: approval
-          requires:
-            - build-deploy-test-ami
+        requires:
+          - build-deploy-test-ami
