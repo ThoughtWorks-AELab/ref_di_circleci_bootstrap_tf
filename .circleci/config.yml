@@ -59,9 +59,9 @@ workflows:
          requires:
            -aprove-build
       - aprove-destroy:
-          type: approval
-          requires:
-            - build-deploy-test-ami
+         type: approval
+         requires:
+           - build-deploy-test-ami
       - destroy:
-          requires:
-            - aprove-destroy
+         requires:
+           - aprove-destroy
