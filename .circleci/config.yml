@@ -54,14 +54,14 @@ workflows:
   build-and-deploy:
     jobs:
       - aprove-build:
-        type: approval
+          type: approval
       - build-deploy-test-ami:
          requires:
            -aprove-build
       - aprove-destroy:
-        type: approval
-        requires:
+          type: approval
+          requires:
             - build-deploy-test-ami
       - destroy:
-        requires:
-          - aprove-destroy
+          requires:
+            - aprove-destroy
