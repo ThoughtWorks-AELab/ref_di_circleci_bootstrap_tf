@@ -46,17 +46,17 @@ jobs:
           password: $QUAY_TOKEN
     steps:
       - checkout
-        - run:
-            command: mkdir ~/.aws
-        - run:
-            command: |
-              cat <<EOF > ~/.aws/credentials
-              [default]
-              aws_access_key_id=$AWS_ACCESS_KEY_ID
-              aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
-              EOF
-        - run:
-            command: /terraform init -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
+      - run:
+          command: mkdir ~/.aws
+      - run:
+          command: |
+            cat <<EOF > ~/.aws/credentials
+            [default]
+            aws_access_key_id=$AWS_ACCESS_KEY_ID
+            aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
+            EOF
+      - run:
+          command: /terraform init -var-file=$CIRCLE_WORKING_DIRECTORY/bootstrap.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
       - attach_workspace:
           at: /
       - run:
