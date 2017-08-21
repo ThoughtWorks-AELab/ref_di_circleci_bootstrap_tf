@@ -39,9 +39,9 @@ jobs:
   destroy:
     docker:
       - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
-          auth:
-            username: $DOCKER_USER
-            password: $QUAY_TOKEN
+        auth:
+          username: $DOCKER_USER
+          password: $QUAY_TOKEN
     steps:
       - attach_workspace:
           at: /
