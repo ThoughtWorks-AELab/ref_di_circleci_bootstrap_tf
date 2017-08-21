@@ -67,7 +67,10 @@ workflows:
       - run_acceptance_test:
           requires:
             - deploy_to_aws
+      - hold:
+         type: approval
+         requires:
+           - run_acceptance_test
       - destroy:
           requires:
-            - run_acceptance_test
             - hold
