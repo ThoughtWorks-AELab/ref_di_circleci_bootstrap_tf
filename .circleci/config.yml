@@ -1,6 +1,6 @@
 version: 2.0
 jobs:
-  build-deploy-test-ami:
+  create-tf-user-and-role:
     docker:
       - image: quay.io/thoughtworks_aelab/circleci-docker:1.20
         auth:
@@ -65,13 +65,13 @@ jobs:
 
 workflows:
   version: 2
-  build-and-deploy-ami:
+  terraform-user_wf:
     jobs:
-      - build-deploy-test-ami
+      - create-tf-user-and-role
       - aprove-destroy:
          type: approval
          requires:
-           -  build-deploy-test-ami
+           -  create-tf-user-and-role
       - destroy:
           requires:
             - aprove-destroy
