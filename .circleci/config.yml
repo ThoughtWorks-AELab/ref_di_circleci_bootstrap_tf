@@ -23,9 +23,11 @@ jobs:
       - run:
           command: |
             cat <<EOF > ~/sub-account.tfvars
+            {
             "sub_account_account_id" : "$DEV_ACCOUNT_ID",
             "sub_account_access_key" : "$DEV_ACCESS_KEY",
             "sub_account_secret_key" : "$DEV_SECRET_KEY"
+            }
             EOF
       - run:
           command: terraform init -var-file=~/sub-account.tfvars -backend-config $CIRCLE_WORKING_DIRECTORY/backend.conf
