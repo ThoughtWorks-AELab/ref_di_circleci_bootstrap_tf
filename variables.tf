@@ -13,8 +13,6 @@ provider "aws" {
 }
 
 variable "bootstrap-aws-default-region" {}
-variable "bootstrap-service-account-name" {}
-variable "bootstrap-service-account-policy-arn" {}
 variable "main_account_id" {}
 variable "main_access_key" {}
 variable "main_secret_key" {}
