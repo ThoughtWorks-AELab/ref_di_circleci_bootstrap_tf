@@ -63,3 +63,15 @@ resource "aws_iam_policy_attachment" "external_tf_user_policy_attachment_to_exte
     roles = ["${aws_iam_role.external_tf_role.name}"]
     policy_arn = "${aws_iam_policy.external_tf_user_policy.arn}"
 }
+
+# build a bucket for future TF usage in the right account
+resource "aws_s3_bucket" "tf_bucket" {
+  provider = "aws.sub_account"
+  bucket = "di_tf_user_bucket"
+  acl    = "private"
+
+  tags {
+    Name        = "di_tf_user_bucket"
+    Environment = "Billing"
+  }
+}

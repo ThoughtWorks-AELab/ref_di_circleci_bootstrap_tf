@@ -44,3 +44,15 @@ resource "aws_iam_group_membership" "sub_account_tf_users" {
     ]
     group = "${aws_iam_group.sub_account_tf_users.name}"
 }
+
+resource "aws_iam_access_key" "tf_user" {
+  user    = "${aws_iam_user.tf_user.name}"
+}
+
+output "key" {
+  value = "${aws_iam_access_key.tf_user.id}"
+}
+
+output "secret" {
+  value = "${aws_iam_access_key.tf_user.secret}"
+}
