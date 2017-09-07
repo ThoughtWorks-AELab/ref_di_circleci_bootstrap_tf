@@ -24,6 +24,11 @@ resource "aws_iam_group_policy" "sub_account_tf_users_policy" {
         "Effect": "Allow",
         "Action": "sts:AssumeRole",
         "Resource": "${aws_iam_role.external_tf_role.arn}"
+    },
+    {
+        "Effect": "Allow",
+        "Action": "sts:AssumeRole",
+        "Resource": "${aws_iam_role.external_kops_role.arn}"
     }
 }
 EOF
