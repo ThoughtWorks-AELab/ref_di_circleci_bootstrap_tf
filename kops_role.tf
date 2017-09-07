@@ -1,10 +1,3 @@
-# setup aws provider for dev account
-provider "aws" {
-  alias = "sub_account"
-  region = "${var.bootstrap-aws-default-region}"
-  access_key = "${var.sub_account_access_key}"
-  secret_key = "${var.sub_account_secret_key}"
-}
 
 resource "aws_iam_policy" "external_kops_user_policy" {
     provider = "aws.sub_account"
