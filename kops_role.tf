@@ -144,7 +144,16 @@ resource "aws_iam_policy" "external_kops_user_policy" {
 			"Effect": "Allow",
 			"Action": "autoscaling:*",
 			"Resource": "*"
-		}
+		},
+    {
+      "Effect": "Allow",
+      "Action": [
+          "route53:*"
+      ],
+      "Resource": [
+          "*"
+      ]
+    }
 	]
 }
 EOF
